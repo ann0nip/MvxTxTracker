@@ -20,7 +20,14 @@ export async function fetchTransactions(address: string): Promise<ProcessedTrans
 
   try {
     const response = await axios.get(
-      `https://api.multiversx.com/addresses/${address}/transactions?size=50`
+      `https://api.multiversx.com/transactions`, {
+        params: {
+          sender: address,
+          receiver: address,
+          size: 50,
+          order: "desc"
+        }
+      }
     );
 
     return processTransactions(response.data);
@@ -34,7 +41,7 @@ function processTransactions(transactions: RawTransaction[]): ProcessedTransacti
   return transactions.map((tx, index) => {
     // Convert value from denominated units (10^18) to EGLD
     const valueInEGLD = Number(tx.value) / Math.pow(10, 18);
-    
+
     // Calculate bubble size using square root for better visual scaling
     const bubbleSize = Math.sqrt(valueInEGLD) * 10;
 
