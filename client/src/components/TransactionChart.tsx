@@ -5,7 +5,9 @@ import {
   YAxis,
   ZAxis,
   Tooltip,
-  ResponsiveContainer
+  ResponsiveContainer,
+  CartesianGrid,
+  Legend
 } from "recharts";
 import { Card } from "@/components/ui/card";
 
@@ -61,20 +63,30 @@ export default function TransactionChart({ transactions, isLoading }: Props) {
 
   return (
     <div className="h-[400px] w-full">
+      <h3 className="text-lg font-medium mb-4 text-center">
+        Transaction Amount Distribution
+      </h3>
+      <p className="text-sm text-muted-foreground text-center mb-6">
+        Bubble size represents transaction amount
+      </p>
       <ResponsiveContainer>
-        <ScatterChart margin={{ top: 20, right: 20, bottom: 20, left: 60 }}>
+        <ScatterChart margin={{ top: 20, right: 20, bottom: 60, left: 60 }}>
+          <CartesianGrid strokeDasharray="3 3" />
           <XAxis 
             dataKey="x" 
-            name="Index" 
+            name="Transaction Index" 
             type="number"
             domain={[0, 'dataMax']}
             tickFormatter={(value) => Math.floor(value).toString()}
+            label={{ value: "Transaction Index (Recent → Old)", position: "bottom", offset: 20 }}
           />
           <YAxis 
             dataKey="y" 
             name="Amount (EGLD)" 
             type="number"
             domain={['auto', 'auto']}
+            label={{ value: "Amount (EGLD)", angle: -90, position: "insideLeft", offset: 10 }}
+            tickFormatter={(value) => value.toFixed(2)}
           />
           <ZAxis 
             dataKey="z" 
@@ -82,7 +94,11 @@ export default function TransactionChart({ transactions, isLoading }: Props) {
             type="number"
           />
           <Tooltip content={<CustomTooltip />} />
+          <Legend payload={[
+            { value: 'Transaction', type: 'circle', color: 'hsl(var(--primary))' }
+          ]} />
           <Scatter
+            name="Transaction"
             data={transactions}
             fill="hsl(var(--primary))"
             fillOpacity={0.6}
