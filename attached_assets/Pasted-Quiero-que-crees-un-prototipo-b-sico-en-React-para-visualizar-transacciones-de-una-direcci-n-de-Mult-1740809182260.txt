@@ -1,0 +1,44 @@
+Quiero que crees un prototipo básico en React para visualizar transacciones de una dirección de MultiversX en un gráfico de burbujas. Usa Vite como herramienta de construcción, Recharts para el gráfico, y Axios para las peticiones a la API de MultiversX. Aquí están los detalles:
+
+1. **Configuración inicial**:
+   - Crea un proyecto con Vite usando el template de React: `npm create vite@latest multiversx-bubble-proto --template react`.
+   - Instala las dependencias: `axios` y `recharts` (`npm install axios recharts`).
+
+2. **Estructura del componente principal (`src/App.jsx`)**:
+   - Un input para que el usuario ingrese una dirección de MultiversX (ejemplo: erd1...).
+   - Un botón "Buscar" que dispare la consulta a la API.
+   - Un gráfico de burbujas usando Recharts que muestre las transacciones.
+   - Usa `useState` para manejar la dirección ingresada y los datos del gráfico.
+
+3. **Lógica de la API**:
+   - Crea una función `fetchTransactions` que use Axios para consultar `https://api.multiversx.com/addresses/{address}/transactions?size=50`.
+   - Maneja errores con try/catch y muestra los datos en la consola para depuración.
+
+4. **Procesamiento de datos**:
+   - Crea una función `processTransactions` que transforme las transacciones en un formato para Recharts:
+     - `x`: Índice de la transacción (0, 1, 2...).
+     - `y`: Monto en EGLD (divide `value` entre 10^18).
+     - `z`: Tamaño de la burbuja (usa la raíz cuadrada del monto en EGLD multiplicada por 10 para escalar).
+     - Guarda también `sender` y `receiver` para el tooltip.
+   - Actualiza el estado con estos datos.
+
+5. **Gráfico de burbujas**:
+   - Usa `ScatterChart` de Recharts con:
+     - `XAxis` para el índice (`x`).
+     - `YAxis` para el monto en EGLD (`y`).
+     - `Scatter` para las burbujas, con tamaño dinámico basado en `z`.
+     - Un `Tooltip` personalizado que muestre `sender`, `receiver` y monto (`y`).
+   - Envuelve el gráfico en `ResponsiveContainer` para que sea adaptable.
+
+6. **Estilos básicos (`src/App.css`)**:
+   - Centra el contenido.
+   - Estiliza el input y el botón con algo simple (padding, márgenes).
+
+7. **Resultado esperado**:
+   - El usuario ingresa una dirección, hace clic en "Buscar", y ve un gráfico de burbujas donde cada punto es una transacción, con tamaño basado en el monto y un tooltip con detalles.
+
+8. **Notas**:
+   - Mantén el código simple, es un prototipo.
+   - Si algo falla, muestra un mensaje en consola (no hace falta UI compleja para errores).
+
+Por favor, genera el proyecto completo con esta estructura. Una vez listo, dame instrucciones para ejecutarlo y probarlo.
