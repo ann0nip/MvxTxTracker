@@ -20,7 +20,12 @@ export async function fetchTransactions(address: string): Promise<ProcessedTrans
 
   try {
     const response = await axios.get(
-      `https://api.multiversx.com/addresses/${address}/transactions?size=50`
+      `https://api.multiversx.com/transactions`, {
+        params: {
+          sender: address,
+          size: 50
+        }
+      }
     );
 
     console.log('API Response:', response.data); // For debugging
